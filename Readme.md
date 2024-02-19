@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Алексей Панцерновский](https://up.htmlacademy.ru/javascript/31/user/1492921).
-* Наставник: `Неизвестно`.
+* Студент: [Алексей Панцерновский] (https://up.htmlacademy.ru/javascript/31/user/1492921).
+* Наставник: [Максим Иванов] (https://htmlacademy.ru/profile/id342945).
 
 ---
 
