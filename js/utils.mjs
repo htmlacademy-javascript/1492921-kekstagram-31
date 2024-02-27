@@ -5,6 +5,12 @@ function createId () {
     return lastId;
   };
 }
-export {createId};
+
+function isInt(value) {
+  return !isNaN(value) &&
+         String(value).trim() === String(parseInt(value, 10));
+}
+
+export {createId, isInt};
 
 
