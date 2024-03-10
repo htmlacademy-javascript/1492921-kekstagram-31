@@ -1,16 +1,20 @@
-const renderPhotos = (photos) => {
-  const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-  const fragment = document.createDocumentFragment();
-  photos.forEach((photo) => {
-    const pictureNew = pictureTemplate.cloneNode(true);
-    const pictureImg = pictureNew.querySelector('.picture__img');
-    pictureImg.src = photo.url;
-    pictureImg.alt = photo.description;
-    pictureNew.querySelector('.picture__likes').textContent = photo.likes;
-    pictureNew.querySelector('.picture__comments').textContent = photo.comments.length;
-    fragment.appendChild(pictureNew);
-  });
-  document.querySelector('.pictures').appendChild(fragment);
+const renderPhoto = (photo, template, classImg = '.picture__img', classLikes = '.picture__likes' , classComments = '.picture__comments') => {
+  const newPhoto = template.cloneNode(true);
+  const newPhotoImg = newPhoto.querySelector(classImg);
+  newPhotoImg.src = photo.url;
+  newPhotoImg.alt = photo.description;
+  newPhoto.querySelector(classLikes).textContent = photo.likes;
+  newPhoto.querySelector(classComments).textContent = photo.comments.length;
+  return newPhoto;
 };
 
-export {renderPhotos};
+const renderPhotos = (photos, container, templateId = 'picture') => {
+  const pictureTemplate = document.querySelector(`#${templateId}`).content.querySelector(`.${templateId}`);
+  const fragment = document.createDocumentFragment();
+  photos.forEach((photo) => {
+    fragment.append(renderPhoto(photo, pictureTemplate));
+  });
+  container.append(fragment);
+};
+
+export {renderPhoto, renderPhotos};
