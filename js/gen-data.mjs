@@ -1,6 +1,6 @@
 import {createId} from './utils.mjs';
-import {rndInt} from './random.mjs';
-import {getRndArrElement} from './random.mjs';
+import {getRandomInt} from './random.mjs';
+import {getRandomArrayElement} from './random.mjs';
 
 const MIN_CNT_LIKES = 15;
 const MAX_CNT_LIKES = 200;
@@ -22,12 +22,12 @@ const genComment = () => {
   ];
   return {
     id: genMessageId(),
-    avatar: `img/avatar-${rndInt(1, 6)}.svg`,
-    message: getRndArrElement(messages),
-    name: getRndArrElement(names)
+    avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
+    message: getRandomArrayElement(messages),
+    name: getRandomArrayElement(names)
   };
 };
-const genComments = (minCnt, maxCnt) => Array.from({length: rndInt(minCnt, maxCnt)}, genComment);
+const genComments = (minCnt, maxCnt) => Array.from({length: getRandomInt(minCnt, maxCnt)}, genComment);
 
 const genPhoto = () => {
   const idPhoto = genPhotoId();
@@ -35,7 +35,7 @@ const genPhoto = () => {
     id: idPhoto,
     url: `photos/${idPhoto}.jpg`,
     description: `Тут будет описание ${idPhoto} фотографии`,
-    likes: rndInt(MIN_CNT_LIKES, MAX_CNT_LIKES),
+    likes: getRandomInt(MIN_CNT_LIKES, MAX_CNT_LIKES),
     comments: genComments(MIN_CNT_MESSAGE, MAX_CNT_MESSAGE)
   };
 };
