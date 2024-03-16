@@ -1,5 +1,5 @@
-import {CNT_PHOTOS} from './const.mjs';
-import {genPhotos} from './gen-data.mjs';
+import {photos} from './data-module.mjs';
 import {renderPhotos} from './render-data.mjs';
 
-renderPhotos(genPhotos(CNT_PHOTOS), document.querySelector('.pictures'));
+renderPhotos(photos, document.querySelector('.pictures'));
+
