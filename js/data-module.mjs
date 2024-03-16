@@ -22,7 +22,7 @@ import {genPhotos} from './gen-data.mjs';
 
 const photos = genPhotos(COUNT_PHOTOS);
 
-// eslint-disable-next-line no-return-assign
+// eslint-disable-next-line no-return-assign, eqeqeq
 const getPhoto = (idFind) => photos.find((photo) => photo.id == idFind);
 
 export {photos, getPhoto};
