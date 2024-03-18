@@ -72,6 +72,12 @@ const renderComments = (comments, CommentsCountShow) => {
   });
   bigPictureCommentsContainer.replaceChildren(fragment);
   bigPictureCommentsCountShow.textContent = CommentsCountShow;
+  if (comments.length === 0) {
+    bigPictureCommentsCount.classList.add('hidden');
+  }
+  if (bigPictureCommentsCountShow.textContent === bigPictureCommentsCountTotal.textContent) {
+    bigPictureCommentsLoadNext.classList.add('hidden');
+  }
 };
 
 export {picturesContainer, bigPicture, bigPictureCommentsCount, renderPhoto, renderPhotos, renderBigPhoto, renderComments, bigPictureCommentsLoadNext};
