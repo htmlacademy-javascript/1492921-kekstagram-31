@@ -2,8 +2,8 @@ const COUNT_PHOTOS = 25;
 
 const MIN_COUNT_LIKES = 15;
 const MAX_COUNT_LIKES = 200;
-const MIN_COUNT_MESSAGE = 0;
-const MAX_COUNT_MESSAGE = 30;
+const MIN_COUNT_COMMENTS = 0;
+const MAX_COUNT_COMMENTS = 30;
 
 const RANDOM_NAMES = ['Иван', 'Наталья', 'Семён', 'Мария', 'Денис', 'Юлия', 'Антон', 'Алесксандр', 'Ирина', 'Надежда'];
 const RANDOM_MESSAAGES = [
@@ -15,4 +15,4 @@ const RANDOM_MESSAAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-export {COUNT_PHOTOS, MIN_COUNT_LIKES, MAX_COUNT_LIKES, MIN_COUNT_MESSAGE, MAX_COUNT_MESSAGE, RANDOM_NAMES, RANDOM_MESSAAGES};
+export {COUNT_PHOTOS, MIN_COUNT_LIKES, MAX_COUNT_LIKES, MIN_COUNT_COMMENTS, MAX_COUNT_COMMENTS, RANDOM_NAMES, RANDOM_MESSAAGES};

@@ -1,4 +1,4 @@
-import {MIN_COUNT_LIKES, MAX_COUNT_LIKES, MIN_COUNT_MESSAGE, MAX_COUNT_MESSAGE, RANDOM_NAMES, RANDOM_MESSAAGES} from './const.mjs';
+import {MIN_COUNT_LIKES, MAX_COUNT_LIKES, MIN_COUNT_COMMENTS, MAX_COUNT_COMMENTS, RANDOM_NAMES, RANDOM_MESSAAGES} from './const.mjs';
 import {createId} from './utils.mjs';
 import {getRandomInt} from './random.mjs';
 import {getRandomArrayElement} from './random.mjs';
@@ -22,7 +22,7 @@ const genPhoto = () => {
     url: `photos/${idPhoto}.jpg`,
     description: `Тут будет описание ${idPhoto} фотографии`,
     likes: getRandomInt(MIN_COUNT_LIKES, MAX_COUNT_LIKES),
-    comments: genComments(MIN_COUNT_MESSAGE, MAX_COUNT_MESSAGE)
+    comments: genComments(MIN_COUNT_COMMENTS, MAX_COUNT_COMMENTS)
   };
 };
 

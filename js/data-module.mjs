@@ -1,5 +1,4 @@
 // Модуль для хранения и обработки данных
-
 /*
 photoObj {
   id: idPhoto,
@@ -17,12 +16,13 @@ commentsObj {
   }
 */
 
-import {COUNT_PHOTOS} from './const.mjs';
+import {COUNT_PHOTOS, MAX_COUNT_COMMENTS} from './const.mjs';
 import {genPhotos} from './gen-data.mjs';
 
 const photos = genPhotos(COUNT_PHOTOS);
 
-// eslint-disable-next-line no-return-assign, eqeqeq
-const getPhoto = (idFind) => photos.find((photo) => photo.id == idFind);
+const getPhoto = (idFind) => photos.find((photo) => photo.id === Number(idFind));
 
-export {photos, getPhoto};
+const getComments = (photo, startIndex = 0, commentsCount = MAX_COUNT_COMMENTS) => photo.comments.slice(startIndex, startIndex + commentsCount);
+
+export {photos, getPhoto, getComments};
