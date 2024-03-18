@@ -11,6 +11,8 @@ function isInt(value) {
          String(value).trim() === String(parseInt(value, 10));
 }
 
-export {createId, isInt};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {createId, isInt, isEscapeKey};
 
 
