@@ -1,14 +1,15 @@
+import {COMMENTS_MAX_COUNT_VIEW} from './const.mjs';
 import {isEscapeKey} from './utils.mjs';
 import {getComments, getPhoto} from './data-module.mjs';
-import {picturesContainer, bigPicture, renderBigPhoto, bigPictureCommentsCount, renderComments, bigPictureCommentsLoadNext} from './render-data.mjs';
+import {picturesContainer, bigPicture, renderBigPhoto, renderComments, bigPictureCommentsLoadNext} from './render-data.mjs';
 
 const btnBigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 
-let commentsCountShown;
+let commentsCountShown = 0;
 let photo;
 
 const showComments = () => {
-  const commentsView = getComments(photo);
+  const commentsView = getComments(photo, commentsCountShown, COMMENTS_MAX_COUNT_VIEW);
   commentsCountShown += commentsView.length;
   renderComments(commentsView, commentsCountShown);
 };
@@ -27,15 +28,15 @@ picturesContainer.addEventListener('click', (evt) => {
     photo = getPhoto(evt.target.parentElement.dataset.idPhoto);
     bigPicture.classList.remove('hidden');
     renderBigPhoto(photo);
+    bigPictureCommentsLoadNext.classList.remove('hidden');
     commentsCountShown = 0;
     showComments();
-    bigPictureCommentsCount.classList.add('hidden');
-    bigPictureCommentsLoadNext.classList.add('hidden');
   } else {
     evt.preventDefault();
   }
 });
 
+bigPictureCommentsLoadNext.addEventListener('click', showComments);
 btnBigPictureCancel.addEventListener('click', closeBigPhoto);
 
 document.addEventListener('keydown', (evt) => {
