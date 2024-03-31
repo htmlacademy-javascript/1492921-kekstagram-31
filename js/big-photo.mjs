@@ -1,47 +1,56 @@
 import {COMMENTS_MAX_COUNT_VIEW} from './const.mjs';
 import {isEscapeKey} from './utils.mjs';
-import {getComments, getPhoto} from './data-module.mjs';
-import {picturesContainer, bigPicture, renderBigPhoto, renderComments, bigPictureCommentsLoadNext} from './render-data.mjs';
-
-const btnBigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
+import {getComments} from './data-module.mjs';
+import {bigPicture, btnBigPictureCancel, bigPictureCommentsCount, renderBigPhoto, renderComments, bigPictureCommentsLoadNext} from './render-data.mjs';
 
 let commentsCountShown = 0;
-let photo;
+let onClickCommentNext;
 
-const showComments = () => {
+const showComments = (photo) => {
   const commentsView = getComments(photo, commentsCountShown, COMMENTS_MAX_COUNT_VIEW);
   commentsCountShown += commentsView.length;
   renderComments(commentsView, commentsCountShown);
+  return function () {};
 };
 
-const closeBigPhoto = () => {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-};
-
-picturesContainer.addEventListener('click', (evt) => {
-  // Т.к.обрабочик стоит на всем контейнере с фотографиями то обработчик  будет срабатывать на лайках и комментариях тоже
-  // поэтому проверяем, что клик был именно на фото
-  if (evt.target.classList.contains('picture__img')) {
-    document.body.classList.add('modal-open');
-
-    photo = getPhoto(evt.target.parentElement.dataset.idPhoto);
-    bigPicture.classList.remove('hidden');
-    renderBigPhoto(photo);
-    bigPictureCommentsLoadNext.classList.remove('hidden');
-    commentsCountShown = 0;
-    showComments();
-  } else {
-    evt.preventDefault();
-  }
-});
-
-bigPictureCommentsLoadNext.addEventListener('click', showComments);
-btnBigPictureCancel.addEventListener('click', closeBigPhoto);
-
-document.addEventListener('keydown', (evt) => {
+const onKeyDownDocument = (evt) => {
   if (isEscapeKey(evt)) {
+    evt.preventDefault();
     closeBigPhoto();
   }
-});
+};
 
+function closeBigPhoto () {
+  bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onKeyDownDocument);
+  bigPictureCommentsLoadNext.removeEventListener('click', onClickCommentNext);
+  btnBigPictureCancel.removeEventListener('click', closeBigPhoto);
+}
+
+function showBigPhoto(evt, photo) {
+
+  onClickCommentNext = (event) => {
+    event.preventDefault();
+    showComments(photo);
+  };
+
+  evt.preventDefault();
+  document.body.classList.add('modal-open');
+  bigPicture.classList.remove('hidden');
+  renderBigPhoto(photo);
+  if (photo.comments.length > 0) {
+    bigPictureCommentsLoadNext.classList.remove('hidden');
+    bigPictureCommentsCount.classList.remove('hidden');
+    bigPictureCommentsLoadNext.addEventListener('click', onClickCommentNext);
+    commentsCountShown = 0;
+  } else {
+    bigPictureCommentsCount.classList.add('hidden');
+    bigPictureCommentsLoadNext.classList.add('hidden');
+  }
+  showComments(photo);
+  document.addEventListener('keydown', onKeyDownDocument);
+  btnBigPictureCancel.addEventListener('click', closeBigPhoto);
+}
+
+export {showBigPhoto};
