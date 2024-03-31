@@ -28,6 +28,8 @@ const renderBigPhoto = ({url, description, likes, comments}) => {
   bigPictureCaption.textContent = description;
   bigPictureLikes.textContent = likes;
   bigPictureCommentsCountTotal.textContent = comments.length;
+  // Очистка комментариев
+  bigPictureCommentsContainer.replaceChildren();
   //bigPicture.dataset.idPhoto = photo.id;
 };
 
@@ -71,13 +73,27 @@ const renderComment = ({avatar, message, name}) => {
   return element;
 };
 
+const renderNoComments = () => {
+  const element = document.createElement('li');
+  element.classList.add(classComment);
+  const commentText = document.createElement('p');
+  commentText.classList.add(classCommentText);
+  commentText.textContent = 'Комментарии отсутствуют';
+  element.append(commentText);
+  return element;
+};
+
 const renderComments = (commentsShow, commentsCountShow) => {
   commentsFragment.innerHTML = '';
-  commentsShow.forEach((comment) => {
-    commentsFragment.append(renderComment(comment));
-  });
-  bigPictureCommentsContainer.replaceChildren(commentsFragment);
+  if (commentsCountShow === 0) {
+    commentsFragment.append(renderNoComments());
+  } else {
+    commentsShow.forEach((comment) => {
+      commentsFragment.append(renderComment(comment));
+    });
+  }
   bigPictureCommentsCountShow.textContent = commentsCountShow;
+  bigPictureCommentsContainer.append(commentsFragment);
   if (bigPictureCommentsCountShow.textContent === bigPictureCommentsCountTotal.textContent) {
     bigPictureCommentsLoadNext.classList.add('hidden');
   }
