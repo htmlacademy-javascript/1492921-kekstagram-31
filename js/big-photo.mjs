@@ -1,7 +1,7 @@
 import {COMMENTS_MAX_COUNT_VIEW} from './const.mjs';
 import {isEscapeKey} from './utils.mjs';
 import {getComments} from './data-module.mjs';
-import {bigPicture, btnBigPictureCancel, bigPictureCommentsCount, renderBigPhoto, renderComments, bigPictureCommentsLoadNext} from './render-data.mjs';
+import {bigPicture, bigPictureBtnClose, bigPictureCommentsCount, renderBigPhoto, renderComments, bigPictureCommentsLoadNext} from './render-data.mjs';
 
 let commentsCountShown = 0;
 let onClickCommentNext;
@@ -24,7 +24,7 @@ function closeBigPhoto () {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onKeyDownDocument);
   bigPictureCommentsLoadNext.removeEventListener('click', onClickCommentNext);
-  btnBigPictureCancel.removeEventListener('click', closeBigPhoto);
+  bigPictureBtnClose.removeEventListener('click', closeBigPhoto);
 }
 
 function showBigPhoto(evt, photo) {
@@ -48,7 +48,7 @@ function showBigPhoto(evt, photo) {
   }
   showComments(photo);
   document.addEventListener('keydown', onKeyDownDocument);
-  btnBigPictureCancel.addEventListener('click', closeBigPhoto);
+  bigPictureBtnClose.addEventListener('click', closeBigPhoto);
 }
 
 export {showBigPhoto};

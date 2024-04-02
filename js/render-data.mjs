@@ -5,7 +5,7 @@ const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
 const bigPictureCaption = bigPicture.querySelector('.social__caption');
-const btnBigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
+const bigPictureBtnClose = bigPicture.querySelector('.big-picture__cancel');
 
 const bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count');
 const bigPictureCommentsCountTotal = bigPictureCommentsCount.querySelector('.social__comment-total-count');
@@ -100,4 +100,4 @@ const renderComments = (commentsShow, commentsCountShow) => {
 };
 
 export {renderPhotos, renderBigPhoto, renderComments};
-export {bigPicture, btnBigPictureCancel, bigPictureCommentsCount, bigPictureCommentsLoadNext};
+export {bigPicture, bigPictureBtnClose, bigPictureCommentsCount, bigPictureCommentsLoadNext};
