@@ -167,12 +167,10 @@ const openImageEdit = (evt) => {
 
   uploadForm.addEventListener('submit', onSubmitUploadForm);
 
-  /* Важно. Подстановка выбранного изображения в форму — это отдельная домашняя работа.
   imgPreview.src = URL.createObjectURL(evt.target.files[0]);
   imgEditForm.querySelectorAll('.effects__preview').forEach((effect) => {
     effect.setAttribute('style', `background-image: url("${URL.createObjectURL(evt.target.files[0])}")`);
   });
-  */
 
   setImgScale(SCALE_IMG_INIT);
 
