@@ -94,6 +94,9 @@ const validateHashtags = (value) => {
 };
 pristine.addValidator(hashtagsInput, validateHashtags, 'Разрешено не более 5-ти уникальных #хэштегов из букв и цифр,<br>разделенных пробелами');
 
+const validateDescription = (value) => value.length <= DESCRIPTION_MAX_LENGTH;
+pristine.addValidator(descriptionInput, validateDescription, `Комментарий не должен превышать ${DESCRIPTION_MAX_LENGTH} символов`);
+
 const onKeyDownDocument = (evt) => {
   if (isEscapeKey(evt) && !['hashtags', 'description'].includes(evt.target.name)) {
     evt.preventDefault();
@@ -199,5 +202,5 @@ uploadForm.setAttribute('method', 'post');
 uploadForm.setAttribute('enctype', 'multipart/form-data');
 uploadForm.setAttribute('action', URL_SERVER);
 
-descriptionInput.setAttribute('maxlength', DESCRIPTION_MAX_LENGTH);
+//descriptionInput.setAttribute('maxlength', DESCRIPTION_MAX_LENGTH);
 
