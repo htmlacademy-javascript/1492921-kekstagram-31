@@ -1,54 +1,50 @@
 import {COMMENTS_MAX_COUNT_VIEW} from './const.mjs';
 import {isEscapeKey} from './utils.mjs';
 import {getComments} from './data-module.mjs';
-import {bigPicture, bigPictureBtnClose, bigPictureCommentsCount, renderBigPhoto, renderComments, bigPictureCommentsLoadNext} from './render-data.mjs';
+import {bigPhoto, btnCloseBigPhoto, btnNextComments, renderBigPhoto, renderComments} from './render-big-photo.mjs';
 
 let commentsCountShown = 0;
-let onClickCommentNext;
+let onBtnNextCommentsClick;
 
 const showComments = (photo) => {
   const commentsView = getComments(photo, commentsCountShown, COMMENTS_MAX_COUNT_VIEW);
   commentsCountShown += commentsView.length;
-  renderComments(commentsView, commentsCountShown);
+  renderComments(commentsView);
 };
 
-const onKeyDownDocument = (evt) => {
+const onDocumentKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPhoto();
   }
 };
 
+const onBtnCloseBigPhotoClick = () => {
+  closeBigPhoto();
+};
+
 function closeBigPhoto () {
-  bigPicture.classList.add('hidden');
+  bigPhoto.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onKeyDownDocument);
-  bigPictureCommentsLoadNext.removeEventListener('click', onClickCommentNext);
-  bigPictureBtnClose.removeEventListener('click', closeBigPhoto);
+  document.removeEventListener('keydown', onDocumentKeyDown);
+  btnNextComments.removeEventListener('click', onBtnNextCommentsClick);
+  btnCloseBigPhoto.removeEventListener('click', onBtnCloseBigPhotoClick);
 }
 
-function showBigPhoto(evt, photo) {
+function showBigPhoto(photo) {
 
-  onClickCommentNext = (event) => {
-    event.preventDefault();
+  onBtnNextCommentsClick = () => {
     showComments(photo);
   };
 
-  evt.preventDefault();
-  document.body.classList.add('modal-open');
-  bigPicture.classList.remove('hidden');
   renderBigPhoto(photo);
-  if (photo.comments.length > 0) {
-    bigPictureCommentsCount.classList.remove('hidden');
-    bigPictureCommentsLoadNext.classList.remove('hidden');
-    bigPictureCommentsLoadNext.addEventListener('click', onClickCommentNext);
-    commentsCountShown = 0;
-  } else {
-    bigPictureCommentsCount.classList.add('hidden');
-  }
+  commentsCountShown = 0;
   showComments(photo);
-  document.addEventListener('keydown', onKeyDownDocument);
-  bigPictureBtnClose.addEventListener('click', closeBigPhoto);
+  document.addEventListener('keydown', onDocumentKeyDown);
+  btnCloseBigPhoto.addEventListener('click', onBtnCloseBigPhotoClick);
+  btnNextComments.addEventListener('click', onBtnNextCommentsClick);
+  document.body.classList.add('modal-open');
+  bigPhoto.classList.remove('hidden');
 }
 
 export {showBigPhoto};
