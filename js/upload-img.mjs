@@ -11,25 +11,25 @@ const btnCloseForm = imgEditForm.querySelector('.img-upload__cancel');
 const viewScale = imgEditForm.querySelector('.scale__control--value');
 const btnScaleMinus = imgEditForm.querySelector('.scale__control--smaller');
 const btnScalePlus = imgEditForm.querySelector('.scale__control--bigger');
+let scaleImgValue;
 const ScaleImg = {
   INIT: 100,
   STEP: 25,
   MIN: 25,
-  MAX: 100,
-  value: 100
+  MAX: 100
 };
 
 const effectList = imgEditForm.querySelectorAll('input[type=radio][name=effect]');
 const sliderContainer = imgEditForm.querySelector('.img-upload__effect-level');
 const sliderElement = imgEditForm.querySelector('.effect-level__slider');
 const effectLevel = imgEditForm.querySelector('.effect-level__value');
-const EFFECT_IMG_INIT = 'none';
+const EFFECT_IMG_INIT = 'NONE';
 const Effects = {
-  chrome: {filter: 'grayscale', minValue: 0, maxValue:1, step: 0.1, unit: ''},
-  sepia: {filter: 'sepia', minValue: 0, maxValue:1, step: 0.1, unit: ''},
-  marvin: {filter: 'invert', minValue: 0, maxValue:100, step: 1, unit: '%'},
-  phobos: {filter: 'blur', minValue: 0, maxValue:3, step: 0.1, unit: 'px'},
-  heat: {filter: 'brightness', minValue: 0, maxValue:3, step: 0.1, unit: ''}
+  CHROME: {filter: 'grayscale', minValue: 0, maxValue:1, step: 0.1, unit: ''},
+  SEPIA: {filter: 'sepia', minValue: 0, maxValue:1, step: 0.1, unit: ''},
+  MARVIN: {filter: 'invert', minValue: 0, maxValue:100, step: 1, unit: '%'},
+  PHOBOS: {filter: 'blur', minValue: 0, maxValue:3, step: 0.1, unit: 'px'},
+  HEAT: {filter: 'brightness', minValue: 0, maxValue:3, step: 0.1, unit: ''}
 };
 
 const FIELD_VALIDATE_STYLE = 'img-upload__field-wrapper';
@@ -55,34 +55,33 @@ const setScaleImg = (scaleValue) => {
   btnScaleMinus.disabled = scaleValue === ScaleImg.MIN;
   btnScalePlus.disabled = scaleValue === ScaleImg.MAX;
   imgPreview.style.transform = `scale(${scaleValue / ScaleImg.MAX})`;
-  ScaleImg.value = scaleValue;
 };
 
-const changeImgEffect = (effectValue) => {
-  if (effectValue === 'none') {
+const changeImgEffect = (effectName) => {
+  if (effectName === 'NONE') {
     sliderContainer.classList.add('hidden');
     imgPreview.style.filter = '';
   } else {
     sliderContainer.classList.remove('hidden');
     sliderElement.noUiSlider.updateOptions({
       range: {
-        min: Effects[effectValue].minValue,
-        max: Effects[effectValue].maxValue,
+        min: Effects[effectName].minValue,
+        max: Effects[effectName].maxValue,
       },
-      start: Effects[effectValue].maxValue,
-      step: Effects[effectValue].step,
+      start: Effects[effectName].maxValue,
+      step: Effects[effectName].step,
     });
   }
 };
 
-const initImgEffect = (effectValue) => {
-  const effectElement = imgEditForm.querySelector(`input[type=radio][name=effect][value=${effectValue}]`);
+const initImgEffect = (effectName) => {
+  const effectElement = imgEditForm.querySelector(`input[type=radio][name=effect][value=${effectName.toLowerCase()}]`);
   effectElement.checked = true;
-  changeImgEffect(effectValue);
+  changeImgEffect(effectName);
 };
 
 const setImgEffect = (effectName, effectValue) => {
-  if (effectName === 'none') {
+  if (effectName === 'NONE') {
     imgPreview.style.filter = '';
   } else {
     imgPreview.style.filter = `${Effects[effectName].filter}(${effectValue}${Effects[effectName].unit})`;
@@ -121,28 +120,29 @@ const onDocumentKeyDown = (evt) => {
 const onBtnScaleClick = (evt) => {
   switch (evt.target) {
     case btnScaleMinus:
-      ScaleImg.value -= ScaleImg.STEP;
+      scaleImgValue -= ScaleImg.STEP;
       break;
     case btnScalePlus:
-      ScaleImg.value += ScaleImg.STEP;
+      scaleImgValue += ScaleImg.STEP;
       break;
     default:
-      ScaleImg.value = ScaleImg.INIT;
+      scaleImgValue = ScaleImg.INIT;
   }
-  setScaleImg(ScaleImg.value);
+  setScaleImg(scaleImgValue);
 };
 
 const onEffectClick = (evt) => {
-  changeImgEffect(evt.target.value);
+  changeImgEffect(evt.target.value.toUpperCase());
 };
 
 const onSliderUpdate = () => {
   effectLevel.value = sliderElement.noUiSlider.get();
-  setImgEffect(imgEditForm.querySelector('input[type=radio][name=effect]:checked').value, effectLevel.value);
+  setImgEffect(imgEditForm.querySelector('input[type=radio][name=effect]:checked').value.toUpperCase(), effectLevel.value);
 };
 
 const initUploadForm = () => {
-  setScaleImg(ScaleImg.INIT);
+  scaleImgValue = ScaleImg.INIT;
+  setScaleImg(scaleImgValue);
   initImgEffect(EFFECT_IMG_INIT);
   setImgEffect(EFFECT_IMG_INIT, effectLevel.value);
   hashtagsInput.value = '';
@@ -196,10 +196,12 @@ const openImageEdit = (evt) => {
 
   uploadForm.addEventListener('submit', onUploadFormSubmit);
 
-  imgPreview.src = URL.createObjectURL(evt.target.files[0]);
+  const urlFile = URL.createObjectURL(evt.target.files[0]);
+  imgPreview.src = urlFile;
   imgEditForm.querySelectorAll('.effects__preview').forEach((effect) => {
-    effect.setAttribute('style', `background-image: url("${URL.createObjectURL(evt.target.files[0])}")`);
+    effect.setAttribute('style', `background-image: url("${urlFile}")`);
   });
+
   initUploadForm();
   imgEditForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
