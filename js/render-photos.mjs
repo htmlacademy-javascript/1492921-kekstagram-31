@@ -1,4 +1,5 @@
 const photosContainer = document.querySelector('.pictures');
+//const photosList = document.createElement('div');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const classPictureImg = 'picture__img';
@@ -23,8 +24,13 @@ const renderPhotos = (photos, onPhotoClick) => {
   photos.forEach((photo) => {
     fragment.append(renderPhoto(photo, onPhotoClick));
   });
+  photosContainer.querySelectorAll('.picture').forEach((photo) => {
+    photo.remove();
+  });
   photosContainer.append(fragment);
 };
+
+//photosContainer.append(photosList);
 
 export {renderPhotos};
 
