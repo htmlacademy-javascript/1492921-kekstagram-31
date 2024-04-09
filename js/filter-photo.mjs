@@ -1,9 +1,7 @@
 import {getPhotosDefault, getPhotosRandom, getPhotosDiscussed} from './data-module.mjs';
-import {renderPhotos} from './render-photos.mjs';
-import {showBigPhoto} from './big-photo.mjs';
+import {debounceRenderPhotos} from './render-photos.mjs';
 
-import {COUNT_RANDOM_PHOTOS, DEBOUNCE_DELAY} from './const.mjs';
-import { debounce } from './utils.mjs';
+import {COUNT_RANDOM_PHOTOS} from './const.mjs';
 
 const filters = document.querySelector('.img-filters');
 const filterDefault = filters.querySelector('#filter-default');
@@ -18,19 +16,33 @@ const showFilters = () => {
 
 let fiterActive = filterDefault;
 
-const onFilterClick = (getPhotos) =>
-  debounce((evt) => {
-    fiterActive.classList.remove(CLASS_FILTER_ACTIVE);
-    evt.target.classList.add(CLASS_FILTER_ACTIVE);
-    renderPhotos(getPhotos(), showBigPhoto);
+const applyFilter = (photos) => {
+  debounceRenderPhotos(photos);
+};
+
+const onFilterChange = (evt) => {
+  if (evt.target.type !== 'button' || fiterActive !== filterRandom && fiterActive === evt.target) {
+    return;
+  }
+  if (fiterActive !== evt.target) {
+    fiterActive.classList.toggle(CLASS_FILTER_ACTIVE);
+    evt.target.classList.toggle(CLASS_FILTER_ACTIVE);
     fiterActive = evt.target;
-  }, DEBOUNCE_DELAY);
+  }
+  let filteredPhoto = [];
+  switch (evt.target) {
+    case filterRandom:
+      filteredPhoto = getPhotosRandom(COUNT_RANDOM_PHOTOS);
+      break;
+    case filterDiscussed:
+      filteredPhoto = getPhotosDiscussed();
+      break;
+    default:
+      filteredPhoto = getPhotosDefault();
+  }
+  applyFilter(filteredPhoto);
+};
 
-filterDefault.addEventListener('click', onFilterClick(() => getPhotosDefault()));
-
-filterRandom.addEventListener('click', onFilterClick(() => getPhotosRandom(COUNT_RANDOM_PHOTOS)));
-
-filterDiscussed.addEventListener('click', onFilterClick(() => getPhotosDiscussed()));
-
+filters.addEventListener('click', onFilterChange);
 
 export {showFilters};

@@ -1,3 +1,7 @@
+import {showBigPhoto} from './big-photo.mjs';
+import {debounce} from './utils.mjs';
+import {DEBOUNCE_DELAY} from './const.mjs';
+
 const photosContainer = document.querySelector('.pictures');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
@@ -18,10 +22,10 @@ const renderPhoto = ({url, description, likes, comments}, onClick) => {
   return element;
 };
 
-const renderPhotos = (photos, onPhotoClick) => {
+const renderPhotos = (photos) => {
   const fragment = document.createDocumentFragment();
   photos.forEach((photo) => {
-    fragment.append(renderPhoto(photo, onPhotoClick));
+    fragment.append(renderPhoto(photo, showBigPhoto));
   });
   photosContainer.querySelectorAll('.picture').forEach((photo) => {
     photo.remove();
@@ -29,5 +33,7 @@ const renderPhotos = (photos, onPhotoClick) => {
   photosContainer.append(fragment);
 };
 
-export {renderPhotos};
+const debounceRenderPhotos = debounce(renderPhotos, DEBOUNCE_DELAY);
+
+export {debounceRenderPhotos};
 

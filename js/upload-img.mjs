@@ -6,7 +6,7 @@ const uploadForm = document.querySelector('.img-upload__form');
 const imgInput = uploadForm.querySelector('.img-upload__input');
 const imgEditForm = uploadForm.querySelector('.img-upload__overlay');
 const imgPreview = imgEditForm.querySelector('.img-upload__preview').querySelector('img');
-const imgEffects = imgEditForm.querySelectorAll('.effects__preview');
+const btnSubmit = uploadForm.querySelector('.img-upload__submit');
 const btnCloseForm = imgEditForm.querySelector('.img-upload__cancel');
 
 const viewScale = imgEditForm.querySelector('.scale__control--value');
@@ -18,7 +18,7 @@ const ScaleImg = {
   MIN: 25,
   MAX: 100
 };
-let scaleImgValue = 100;
+let scaleImgValue = ScaleImg.INIT;
 
 const effectList = imgEditForm.querySelectorAll('input[type=radio][name=effect]');
 const sliderContainer = imgEditForm.querySelector('.img-upload__effect-level');
@@ -55,7 +55,7 @@ const setScaleImg = (scaleValue) => {
   viewScale.value = `${scaleValue}%`;
   btnScaleMinus.disabled = scaleValue === ScaleImg.MIN;
   btnScalePlus.disabled = scaleValue === ScaleImg.MAX;
-  imgPreview.style.transform = `scale(${scaleValue / ScaleImg.MAX})`;
+  imgPreview.style.transform = `scale(${(scaleValue / ScaleImg.MAX).toFixed(2)}`;
 };
 
 const changeImgEffect = (effectName) => {
@@ -84,7 +84,9 @@ const initImgEffect = (effectName) => {
 const setImgEffect = (effectName, effectValue) => {
   if (effectName === 'NONE') {
     imgPreview.style.filter = '';
+    effectLevel.classList.add('hidden');
   } else {
+    effectLevel.classList.remove('hidden');
     imgPreview.style.filter = `${Effects[effectName].filter}(${effectValue}${Effects[effectName].unit})`;
   }
 };
@@ -119,6 +121,9 @@ const onDocumentKeyDown = (evt) => {
 };
 
 const onBtnScaleClick = (evt) => {
+  if (evt.target.disabled) {
+    return;
+  }
   switch (evt.target) {
     case btnScaleMinus:
       scaleImgValue -= ScaleImg.STEP;
@@ -147,22 +152,27 @@ const initUploadForm = () => {
   initImgEffect(EFFECT_IMG_INIT);
   setImgEffect(EFFECT_IMG_INIT, effectLevel.value);
   hashtagsInput.value = '';
-  pristine.validate();
+  pristine.reset();
   descriptionInput.value = '';
 };
 
 const onUploadFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
+    btnSubmit.disabled = true;
     sendData(new FormData(evt.target))
       .then(showUploadSuccess)
       .then(closeImageEdit)
-      .catch(showUploadError);
+      .catch(showUploadError)
+      .finally(() => {
+        btnSubmit.disabled = false;
+      });
   }
 };
 
 function closeImageEdit () {
   imgInput.value = '';
+  initUploadForm();
   imgEditForm.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
@@ -194,15 +204,13 @@ const openImageEdit = (evt) => {
   });
 
   sliderElement.noUiSlider.on('update', onSliderUpdate);
-
   uploadForm.addEventListener('submit', onUploadFormSubmit);
 
   const urlFile = URL.createObjectURL(evt.target.files[0]);
   imgPreview.src = urlFile;
-  imgEffects.forEach((effect) => {
+  imgEditForm.querySelectorAll('.effects__preview').forEach((effect) => {
     effect.setAttribute('style', `background-image: url("${urlFile}")`);
   });
-
   initUploadForm();
   imgEditForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -217,7 +225,18 @@ noUiSlider.create(sliderElement, {
   },
   step: 0,
   start: 0,
-  connect: 'lower'
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
 });
 
 uploadForm.setAttribute('method', 'post');
