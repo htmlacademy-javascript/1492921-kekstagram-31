@@ -1,4 +1,4 @@
-import {COMMENTS_MAX_COUNT_VIEW} from './const.mjs';
+import {COUNT_MAX_COMMENTS_VIEW} from './const.mjs';
 import {isEscapeKey} from './utils.mjs';
 import {getComments} from './data-module.mjs';
 import {bigPhoto, btnCloseBigPhoto, btnNextComments, renderBigPhoto, renderComments} from './render-big-photo.mjs';
@@ -7,7 +7,7 @@ let commentsCountShown = 0;
 let onBtnNextCommentsClick;
 
 const showComments = (photo) => {
-  const commentsView = getComments(photo, commentsCountShown, COMMENTS_MAX_COUNT_VIEW);
+  const commentsView = getComments(photo, commentsCountShown, COUNT_MAX_COMMENTS_VIEW);
   commentsCountShown += commentsView.length;
   renderComments(commentsView);
 };
