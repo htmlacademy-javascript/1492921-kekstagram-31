@@ -6,10 +6,10 @@ const errorLoadTemplate = document.querySelector('#data-error').content.querySel
 const errorUploadTemplate = document.querySelector('#error').content.querySelector('.error');
 const successUploadTemplate = document.querySelector('#success').content.querySelector('.success');
 
-const showAlert = (template, autoCloseSeconds = SECONDS_AUTO_CLOSE_MESSAGE) => {
+const showAlert = (template, secondsAutoCloseSeconds = SECONDS_AUTO_CLOSE_MESSAGE) => {
   const formMessage = template.cloneNode(true);
   document.body.append(formMessage);
-  setTimeout(() => formMessage.remove(), autoCloseSeconds * 1000);
+  setTimeout(() => formMessage.remove(), secondsAutoCloseSeconds * 1000);
 };
 
 const showUploadMessage = (template) => {
@@ -47,7 +47,7 @@ const showUploadMessage = (template) => {
   formMessage.addEventListener('click', onOutFormMessageClick);
 };
 
-const showloadError = () => showAlert(errorLoadTemplate, SECONDS_AUTO_CLOSE_MESSAGE);
+const showloadError = () => showAlert(errorLoadTemplate);
 const showUploadError = () => showUploadMessage(errorUploadTemplate);
 const showUploadSuccess = () => showUploadMessage(successUploadTemplate);
 

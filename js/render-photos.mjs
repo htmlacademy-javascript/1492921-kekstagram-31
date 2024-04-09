@@ -1,19 +1,18 @@
 const photosContainer = document.querySelector('.pictures');
-//const photosList = document.createElement('div');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const classPictureImg = 'picture__img';
-const classPictureLikes = 'picture__likes';
-const classPictureCommentsCountTotal = 'picture__comments';
+const CLASS_PHOTO_IMG = 'picture__img';
+const CLASS_PHOTO_LIKES = 'picture__likes';
+const CLASS_PHOTO_COMMENTS_COUNT_TOTAL = 'picture__comments';
 
 const renderPhoto = ({url, description, likes, comments}, onClick) => {
   const element = photoTemplate.cloneNode(true);
-  const pictureImg = element.querySelector(`.${classPictureImg}`);
-  pictureImg.src = url;
-  pictureImg.alt = description;
-  element.querySelector(`.${classPictureLikes}`).textContent = likes;
-  element.querySelector(`.${classPictureCommentsCountTotal}`).textContent = comments.length;
-  pictureImg.addEventListener('click', () => {
+  const photoImg = element.querySelector(`.${CLASS_PHOTO_IMG}`);
+  photoImg.src = url;
+  photoImg.alt = description;
+  element.querySelector(`.${CLASS_PHOTO_LIKES}`).textContent = likes;
+  element.querySelector(`.${CLASS_PHOTO_COMMENTS_COUNT_TOTAL}`).textContent = comments.length;
+  photoImg.addEventListener('click', () => {
     onClick({url, description, likes, comments});
   });
   return element;
@@ -29,8 +28,6 @@ const renderPhotos = (photos, onPhotoClick) => {
   });
   photosContainer.append(fragment);
 };
-
-//photosContainer.append(photosList);
 
 export {renderPhotos};
 

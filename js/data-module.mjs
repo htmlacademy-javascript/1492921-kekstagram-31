@@ -18,28 +18,26 @@ commentsObj {
   }
 */
 
-//import {COUNT_PHOTOS, MAX_COUNT_COMMENTS} from './const.mjs';
-//import {genPhotos} from './gen-data.mjs';
-import {COMMENTS_MAX_COUNT_VIEW, COUNT_RANDOM_PHOTOS} from './const.mjs';
-import {getRandomInt} from './random.mjs';
+import {COUNT_MAX_COMMENTS_VIEW, COUNT_RANDOM_PHOTOS} from './const.mjs';
+import {getRandomInt} from './utils.mjs';
 
 const URL_SERVER = 'https://31.javascript.htmlacademy.pro/kekstagram';
 
 const FetchMethod = {
   GET: {
     name: 'GET',
-    addUrl: '/data',
+    route: '/data',
     errorText: 'Не далось загрузить данные с сервера. Попробуйте обновить страницу'
   },
   POST: {
     name: 'POST',
-    addUrl: '/',
+    route: '/',
     errorText: 'Не удалось отправить данные на сервер. Попробуйте ещё раз'
   }
 };
 
 const loadData = (method = FetchMethod.GET, body = null) =>
-  fetch(`${URL_SERVER}${method.addUrl}`, {method: method.name, body: body})
+  fetch(`${URL_SERVER}${method.route}`, {method: method.name, body: body})
     .then((response) => {
       if (!response.ok) {
         throw new Error();
@@ -61,12 +59,10 @@ const getData = () =>
 
 const sendData = (body) => loadData(FetchMethod.POST, body);
 
-//const photosDefault = genPhotos(COUNT_PHOTOS);
+const getComments = (photo, startIndex = 0, countCcomments = COUNT_MAX_COMMENTS_VIEW) =>
+  photo.comments.slice(startIndex, startIndex + countCcomments);
 
-const getPhoto = (idFind) => photosDefault.find((photo) => photo.id === Number(idFind));
-
-const getComments = (photo, startIndex = 0, commentsCount = COMMENTS_MAX_COUNT_VIEW) =>
-  photo.comments.slice(startIndex, startIndex + commentsCount);
+const getPhotosDefault = () => photosDefault;
 
 const getPhotosRandom = (countPhoto = COUNT_RANDOM_PHOTOS) => {
   const result = [];
@@ -82,4 +78,4 @@ const getPhotosRandom = (countPhoto = COUNT_RANDOM_PHOTOS) => {
 
 const getPhotosDiscussed = () => photosDefault.slice().sort((photo1, photo2) => photo2.comments.length - photo1.comments.length);
 
-export {photosDefault, getPhoto, getComments, getPhotosRandom, getPhotosDiscussed, getData, sendData, URL_SERVER};
+export {getPhotosDefault, getComments, getPhotosRandom, getPhotosDiscussed, getData, sendData, URL_SERVER};

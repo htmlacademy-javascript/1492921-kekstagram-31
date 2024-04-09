@@ -6,24 +6,24 @@ const uploadForm = document.querySelector('.img-upload__form');
 const imgInput = uploadForm.querySelector('.img-upload__input');
 const imgEditForm = uploadForm.querySelector('.img-upload__overlay');
 const imgPreview = imgEditForm.querySelector('.img-upload__preview').querySelector('img');
+const imgEffects = imgEditForm.querySelectorAll('.effects__preview');
 const btnCloseForm = imgEditForm.querySelector('.img-upload__cancel');
 
 const viewScale = imgEditForm.querySelector('.scale__control--value');
 const btnScaleMinus = imgEditForm.querySelector('.scale__control--smaller');
 const btnScalePlus = imgEditForm.querySelector('.scale__control--bigger');
-let scaleImgValue;
 const ScaleImg = {
   INIT: 100,
   STEP: 25,
   MIN: 25,
   MAX: 100
 };
+let scaleImgValue = 100;
 
 const effectList = imgEditForm.querySelectorAll('input[type=radio][name=effect]');
 const sliderContainer = imgEditForm.querySelector('.img-upload__effect-level');
 const sliderElement = imgEditForm.querySelector('.effect-level__slider');
 const effectLevel = imgEditForm.querySelector('.effect-level__value');
-const EFFECT_IMG_INIT = 'NONE';
 const Effects = {
   CHROME: {filter: 'grayscale', minValue: 0, maxValue:1, step: 0.1, unit: ''},
   SEPIA: {filter: 'sepia', minValue: 0, maxValue:1, step: 0.1, unit: ''},
@@ -31,8 +31,9 @@ const Effects = {
   PHOBOS: {filter: 'blur', minValue: 0, maxValue:3, step: 0.1, unit: 'px'},
   HEAT: {filter: 'brightness', minValue: 0, maxValue:3, step: 0.1, unit: ''}
 };
+const EFFECT_IMG_INIT = 'NONE';
 
-const FIELD_VALIDATE_STYLE = 'img-upload__field-wrapper';
+const CLASS_FIELD_VALIDATE = 'img-upload__field-wrapper';
 
 const hashtagsInput = imgEditForm.querySelector('.text__hashtags');
 const HASHTAGS_MAX_COUNT = 5;
@@ -42,12 +43,12 @@ const descriptionInput = imgEditForm.querySelector('.text__description');
 const DESCRIPTION_MAX_LENGTH = 140;
 
 const pristine = new Pristine(uploadForm, {
-  classTo: FIELD_VALIDATE_STYLE,
-  errorClass: `${FIELD_VALIDATE_STYLE}--invalid`,
-  successClass: `${FIELD_VALIDATE_STYLE}--valid`,
-  errorTextParent: FIELD_VALIDATE_STYLE,
+  classTo: CLASS_FIELD_VALIDATE,
+  errorClass: `${CLASS_FIELD_VALIDATE}--invalid`,
+  successClass: `${CLASS_FIELD_VALIDATE}--valid`,
+  errorTextParent: CLASS_FIELD_VALIDATE,
   errorTextTag: 'div',
-  errorTextClass: `${FIELD_VALIDATE_STYLE}--error`
+  errorTextClass: `${CLASS_FIELD_VALIDATE}--error`
 });
 
 const setScaleImg = (scaleValue) => {
@@ -198,7 +199,7 @@ const openImageEdit = (evt) => {
 
   const urlFile = URL.createObjectURL(evt.target.files[0]);
   imgPreview.src = urlFile;
-  imgEditForm.querySelectorAll('.effects__preview').forEach((effect) => {
+  imgEffects.forEach((effect) => {
     effect.setAttribute('style', `background-image: url("${urlFile}")`);
   });
 
