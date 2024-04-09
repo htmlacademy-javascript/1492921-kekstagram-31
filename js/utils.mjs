@@ -13,6 +13,14 @@ function isInt(value) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {createId, isInt, isEscapeKey};
+const debounce = (cb, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => cb.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {createId, isInt, isEscapeKey, debounce};
 
 

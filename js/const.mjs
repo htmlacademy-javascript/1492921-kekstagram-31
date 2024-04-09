@@ -1,11 +1,14 @@
-const COUNT_PHOTOS = 25;
+const DEBOUNCE_DELAY = 500;
 
+const COUNT_RANDOM_PHOTOS = 10;
+const COMMENTS_MAX_COUNT_VIEW = 5;
+
+/*
+const COUNT_PHOTOS = 25;
 const MIN_COUNT_LIKES = 15;
 const MAX_COUNT_LIKES = 200;
 const MIN_COUNT_COMMENTS = 0;
 const MAX_COUNT_COMMENTS = 30;
-
-const COMMENTS_MAX_COUNT_VIEW = 5;
 
 const RANDOM_NAMES = ['Иван', 'Наталья', 'Семён', 'Мария', 'Денис', 'Юлия', 'Антон', 'Алесксандр', 'Ирина', 'Надежда'];
 const RANDOM_MESSAAGES = [
@@ -16,5 +19,7 @@ const RANDOM_MESSAAGES = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
+*/
 
-export {COUNT_PHOTOS, MIN_COUNT_LIKES, MAX_COUNT_LIKES, MIN_COUNT_COMMENTS, MAX_COUNT_COMMENTS, RANDOM_NAMES, RANDOM_MESSAAGES, COMMENTS_MAX_COUNT_VIEW};
+export {DEBOUNCE_DELAY, COUNT_RANDOM_PHOTOS, COMMENTS_MAX_COUNT_VIEW};
+//export {COUNT_PHOTOS, MIN_COUNT_LIKES, MAX_COUNT_LIKES, MIN_COUNT_COMMENTS, MAX_COUNT_COMMENTS, RANDOM_NAMES, RANDOM_MESSAAGES};

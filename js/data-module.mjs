@@ -20,7 +20,8 @@ commentsObj {
 
 //import {COUNT_PHOTOS, MAX_COUNT_COMMENTS} from './const.mjs';
 //import {genPhotos} from './gen-data.mjs';
-import {MAX_COUNT_COMMENTS} from './const.mjs';
+import {COMMENTS_MAX_COUNT_VIEW, COUNT_RANDOM_PHOTOS} from './const.mjs';
+import {getRandomInt} from './random.mjs';
 
 const URL_SERVER = 'https://31.javascript.htmlacademy.pro/kekstagram';
 
@@ -49,14 +50,36 @@ const loadData = (method = FetchMethod.GET, body = null) =>
       throw new Error(method.errorText);
     });
 
-const getData = () => loadData(FetchMethod.GET);
+let photosDefault;
+
+const getData = () =>
+  loadData(FetchMethod.GET)
+    .then((photos) => {
+      photosDefault = photos;
+      return photos;
+    });
 
 const sendData = (body) => loadData(FetchMethod.POST, body);
 
-//const photos;
-//const photos = genPhotos(COUNT_PHOTOS);
-//const getPhoto = (idFind) => photos.find((photo) => photo.id === Number(idFind));
+//const photosDefault = genPhotos(COUNT_PHOTOS);
 
-const getComments = (photo, startIndex = 0, commentsCount = MAX_COUNT_COMMENTS) => photo.comments.slice(startIndex, startIndex + commentsCount);
+const getPhoto = (idFind) => photosDefault.find((photo) => photo.id === Number(idFind));
 
-export {/*photos, getPhoto, */getComments, getData, sendData, URL_SERVER};
+const getComments = (photo, startIndex = 0, commentsCount = COMMENTS_MAX_COUNT_VIEW) =>
+  photo.comments.slice(startIndex, startIndex + commentsCount);
+
+const getPhotosRandom = (countPhoto = COUNT_RANDOM_PHOTOS) => {
+  const result = [];
+  let randomIdx;
+  while (result.length < countPhoto) {
+    randomIdx = getRandomInt(0, photosDefault.length - 1);
+    if (result.indexOf(photosDefault[randomIdx]) === -1) {
+      result.push(photosDefault[randomIdx]);
+    }
+  }
+  return result;
+};
+
+const getPhotosDiscussed = () => photosDefault.slice().sort((photo1, photo2) => photo2.comments.length - photo1.comments.length);
+
+export {photosDefault, getPhoto, getComments, getPhotosRandom, getPhotosDiscussed, getData, sendData, URL_SERVER};
