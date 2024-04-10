@@ -9,7 +9,7 @@ const successUploadTemplate = document.querySelector('#success').content.querySe
 const showAlert = (template, secondsAutoCloseSeconds = SECONDS_AUTO_CLOSE_MESSAGE) => {
   const formMessage = template.cloneNode(true);
   document.body.append(formMessage);
-  setTimeout(() => formMessage.remove(), secondsAutoCloseSeconds * 1000);
+  setTimeout(() => formMessage.remove(), secondsAutoCloseSeconds * 1000); // * 1000 - перевод в миллисекунды
 };
 
 const showUploadMessage = (template) => {

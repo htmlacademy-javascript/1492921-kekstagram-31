@@ -1,14 +1,13 @@
 import {getPhotosDefault, getPhotosRandom, getPhotosDiscussed} from './data-module.mjs';
 import {debounceRenderPhotos} from './render-photos.mjs';
-
 import {COUNT_RANDOM_PHOTOS} from './const.mjs';
+
+const CLASS_FILTER_ACTIVE = 'img-filters__button--active';
 
 const filters = document.querySelector('.img-filters');
 const filterDefault = filters.querySelector('#filter-default');
 const filterRandom = filters.querySelector('#filter-random');
 const filterDiscussed = filters.querySelector('#filter-discussed');
-
-const CLASS_FILTER_ACTIVE = 'img-filters__button--active';
 
 const showFilters = () => {
   filters.classList.remove('img-filters--inactive');

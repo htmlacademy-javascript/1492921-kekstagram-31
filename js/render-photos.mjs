@@ -2,12 +2,12 @@ import {showBigPhoto} from './big-photo.mjs';
 import {debounce} from './utils.mjs';
 import {DEBOUNCE_DELAY} from './const.mjs';
 
-const photosContainer = document.querySelector('.pictures');
-const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
-
+const CLASS_PHOTO_COMMENTS_COUNT_TOTAL = 'picture__comments';
 const CLASS_PHOTO_IMG = 'picture__img';
 const CLASS_PHOTO_LIKES = 'picture__likes';
-const CLASS_PHOTO_COMMENTS_COUNT_TOTAL = 'picture__comments';
+
+const photosContainer = document.querySelector('.pictures');
+const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const renderPhoto = ({url, description, likes, comments}, onClick) => {
   const element = photoTemplate.cloneNode(true);

@@ -1,6 +1,8 @@
+import {DEBOUNCE_DELAY} from './const.mjs';
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const debounce = (cb, timeoutDelay = 500) => {
+const debounce = (cb, timeoutDelay = DEBOUNCE_DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);

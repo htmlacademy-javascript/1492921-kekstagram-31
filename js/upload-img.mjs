@@ -2,6 +2,27 @@ import {isEscapeKey} from './utils.mjs';
 import {URL_SERVER, sendData} from './data-module.mjs';
 import {showUploadError, showUploadSuccess } from './show-message.mjs';
 
+const HASHTAGS_MAX_COUNT = 5;
+const HASHTAGS_MAX_LENGTH = 20;
+const DESCRIPTION_MAX_LENGTH = 140;
+
+const EFFECT_IMG_INIT = 'NONE';
+const CLASS_FIELD_VALIDATE = 'img-upload__field-wrapper';
+
+const ScaleImg = {
+  INIT: 100,
+  STEP: 25,
+  MIN: 25,
+  MAX: 100
+};
+const Effects = {
+  CHROME: {filter: 'grayscale', minValue: 0, maxValue:1, step: 0.1, unit: ''},
+  SEPIA: {filter: 'sepia', minValue: 0, maxValue:1, step: 0.1, unit: ''},
+  MARVIN: {filter: 'invert', minValue: 0, maxValue:100, step: 1, unit: '%'},
+  PHOBOS: {filter: 'blur', minValue: 0, maxValue:3, step: 0.1, unit: 'px'},
+  HEAT: {filter: 'brightness', minValue: 0, maxValue:3, step: 0.1, unit: ''}
+};
+
 const uploadForm = document.querySelector('.img-upload__form');
 const imgInput = uploadForm.querySelector('.img-upload__input');
 const imgEditForm = uploadForm.querySelector('.img-upload__overlay');
@@ -12,35 +33,16 @@ const btnCloseForm = imgEditForm.querySelector('.img-upload__cancel');
 const viewScale = imgEditForm.querySelector('.scale__control--value');
 const btnScaleMinus = imgEditForm.querySelector('.scale__control--smaller');
 const btnScalePlus = imgEditForm.querySelector('.scale__control--bigger');
-const ScaleImg = {
-  INIT: 100,
-  STEP: 25,
-  MIN: 25,
-  MAX: 100
-};
+
 let scaleImgValue = ScaleImg.INIT;
 
 const effectList = imgEditForm.querySelectorAll('input[type=radio][name=effect]');
 const sliderContainer = imgEditForm.querySelector('.img-upload__effect-level');
 const sliderElement = imgEditForm.querySelector('.effect-level__slider');
 const effectLevel = imgEditForm.querySelector('.effect-level__value');
-const Effects = {
-  CHROME: {filter: 'grayscale', minValue: 0, maxValue:1, step: 0.1, unit: ''},
-  SEPIA: {filter: 'sepia', minValue: 0, maxValue:1, step: 0.1, unit: ''},
-  MARVIN: {filter: 'invert', minValue: 0, maxValue:100, step: 1, unit: '%'},
-  PHOBOS: {filter: 'blur', minValue: 0, maxValue:3, step: 0.1, unit: 'px'},
-  HEAT: {filter: 'brightness', minValue: 0, maxValue:3, step: 0.1, unit: ''}
-};
-const EFFECT_IMG_INIT = 'NONE';
-
-const CLASS_FIELD_VALIDATE = 'img-upload__field-wrapper';
 
 const hashtagsInput = imgEditForm.querySelector('.text__hashtags');
-const HASHTAGS_MAX_COUNT = 5;
-const HASHTAGS_MAX_LENGTH = 20;
-
 const descriptionInput = imgEditForm.querySelector('.text__description');
-const DESCRIPTION_MAX_LENGTH = 140;
 
 const pristine = new Pristine(uploadForm, {
   classTo: CLASS_FIELD_VALIDATE,
