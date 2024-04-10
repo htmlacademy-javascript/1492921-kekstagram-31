@@ -4,8 +4,8 @@ import {showloadError} from './show-message.mjs';
 import {showFilters} from './filter-photo.mjs';
 
 getData()
-  .then((photos) => {
-    debounceRenderPhotos(photos);
+  .then((photoCollection) => {
+    debounceRenderPhotos(photoCollection);
   })
   .then(showFilters)
   .catch(showloadError);
